@@ -1,10 +1,4 @@
-<?phpvar_dump($user);
-echo "<br>";
-echo "input password: " . $password;
-echo "<br>";
-echo "db password: " . $user['password'];
-exit();
-
+<?php
 session_start();
 require '../config/db.php';
 
