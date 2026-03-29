@@ -42,7 +42,7 @@ if (!$user) {
 }
 
 // ตรวจรหัสผ่าน
-if (!password_verify($password, $user['password'])) {
+if ($password != $user['password']) {
     pg_query($conn, "INSERT INTO logs_login (user_id, ip_address, status) VALUES ('{$user['id']}', '{$_SERVER['REMOTE_ADDR']}', 'failed')");
     $_SESSION['flash_alert'] = [
         'type' => 'error',
