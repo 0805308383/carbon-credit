@@ -1,4 +1,10 @@
-<?php
+<?phpvar_dump($user);
+echo "<br>";
+echo "input password: " . $password;
+echo "<br>";
+echo "db password: " . $user['password'];
+exit();
+
 session_start();
 require '../config/db.php';
 
@@ -42,7 +48,7 @@ if (!$user) {
 }
 
 // ตรวจรหัสผ่าน
-if ($password != $user['password']) {
+if (!password_verify($password, $user['password'])) {
     pg_query($conn, "INSERT INTO logs_login (user_id, ip_address, status) VALUES ('{$user['id']}', '{$_SERVER['REMOTE_ADDR']}', 'failed')");
     $_SESSION['flash_alert'] = [
         'type' => 'error',
