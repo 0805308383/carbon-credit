@@ -1,4 +1,13 @@
 <?php
+include 'config/db.php';
+
+if ($conn) {
+  echo "DB Connected ✅";
+} else {
+  echo "DB Failed ❌";
+}
+?>
+<?php
 session_start();
 if (isset($_SESSION['user_id'])) {
     header("Location: dashboard/index.php");
