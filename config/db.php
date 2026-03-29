@@ -1,9 +1,9 @@
 <?php
 $host = "aws-1-ap-southeast-2.pooler.supabase.com";
-$port = "5432";
+$port = "6543"; // เปลี่ยน!
 $db   = "postgres";
-$user = "postgres";
-$pass = "your-password";
+$user = "postgres.hzcyclqcxomqetbhthnq"; // สำคัญ!
+$pass = "YOUR_PASSWORD";
 
 $conn = pg_connect("
   host=$host
