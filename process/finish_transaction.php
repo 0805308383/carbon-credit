@@ -29,7 +29,7 @@ if ($type === 'buy_listing') {
     $buy_amount = $transaction['buy_amount'] ?? 0;
 
     // Re-verify Balance before final insert
-    $wallet_q = mysqli_query($conn, "SELECT token FROM wallets WHERE user_id = $buyer_id");
+    $wallet_q = pg_query($conn, "SELECT token FROM wallets WHERE user_id = $buyer_id");
     $wallet = mysqli_fetch_assoc($wallet_q);
 
     if (!$wallet || (float)$wallet['token'] < $price) {
@@ -43,7 +43,7 @@ if ($type === 'buy_listing') {
     }
 
     // Insert Order
-    mysqli_query($conn, "
+    pg_query($conn, "
         INSERT INTO orders (buyer_id, listing_id, price, buy_amount, status)
         VALUES ($buyer_id, $listing_id, $price, $buy_amount, 'pending_admin')
     ");
@@ -61,7 +61,7 @@ if ($type === 'buy_listing') {
     // but I'll update it here for consistency if any old flow uses it.
     $seller_id = $transaction['seller_id'];
     // ... rest of the code ...
-    mysqli_query($conn, $sql) or die(mysqli_error($conn));
+    pg_query($conn, $sql) or die(mysqli_error($conn));
 
     $_SESSION['flash_alert'] = [
         'type' => 'success',

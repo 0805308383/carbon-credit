@@ -1,11 +1,19 @@
 <?php
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db   = "carbon_credit";
+$host = "db.xxxxx.supabase.co";
+$port = "5432";
+$db   = "postgres";
+$user = "postgres";
+$pass = "your-password";
 
-$conn = mysqli_connect($host, $user, $pass, $db);
+$conn = pg_connect("
+  host=$host
+  port=$port
+  dbname=$db
+  user=$user
+  password=$pass
+");
 
 if (!$conn) {
-    die("Database connection failed: " . mysqli_connect_error());
+  die("Database connection failed");
 }
+?>

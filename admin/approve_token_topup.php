@@ -10,7 +10,7 @@ $id = (int)($_GET['id'] ?? 0);
 if ($id <= 0) exit('ข้อมูลไม่ถูกต้อง');
 
 // ดึงข้อมูล topup
-$q = mysqli_query($conn, "
+$q = pg_query($conn, "
     SELECT * FROM token_topups
     WHERE id = $id AND status='pending_admin'
 ");
@@ -24,25 +24,25 @@ mysqli_begin_transaction($conn);
 
 try {
     // 🔥 สร้าง wallet ถ้ายังไม่มี (จุดที่ขาด)
-    $check = mysqli_query($conn, "
+    $check = pg_query($conn, "
         SELECT id FROM wallets WHERE user_id = $user_id
     ");
     if (mysqli_num_rows($check) == 0) {
-        mysqli_query($conn, "
+        pg_query($conn, "
             INSERT INTO wallets (user_id, balance, token)
             VALUES ($user_id, 0, 0)
         ");
     }
 
     // เพิ่ม token ให้ buyer
-    mysqli_query($conn, "
+    pg_query($conn, "
         UPDATE wallets
         SET token = token + $token
         WHERE user_id = $user_id
     ");
 
     // เปลี่ยนสถานะคำขอ
-    mysqli_query($conn, "
+    pg_query($conn, "
         UPDATE token_topups
         SET status='approved'
         WHERE id = $id

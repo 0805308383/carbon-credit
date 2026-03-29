@@ -11,20 +11,20 @@ $role    = $_SESSION['role'];
 
 // Seller Status
 $sellerStatus = null;
-$qStatus = mysqli_query($conn, "SELECT status FROM seller_requests WHERE user_id = $user_id ORDER BY id DESC LIMIT 1");
+$qStatus = pg_query($conn, "SELECT status FROM seller_requests WHERE user_id = $user_id ORDER BY id DESC LIMIT 1");
 if ($qStatus && $row = mysqli_fetch_assoc($qStatus)) {
     $sellerStatus = $row['status'];
 }
 
 // Wallet
 $wallet = null;
-$qWallet = mysqli_query($conn, "SELECT balance, token, carbon_balance FROM wallets WHERE user_id = $user_id");
+$qWallet = pg_query($conn, "SELECT balance, token, carbon_balance FROM wallets WHERE user_id = $user_id");
 if ($qWallet && mysqli_num_rows($qWallet) > 0) {
     $wallet = mysqli_fetch_assoc($qWallet);
 }
 
 // User Type Mapping
-$qUser = mysqli_query($conn, "SELECT user_type FROM users WHERE id = $user_id");
+$qUser = pg_query($conn, "SELECT user_type FROM users WHERE id = $user_id");
 $uRow = mysqli_fetch_assoc($qUser);
 $utype = $uRow['user_type'] ?? 'individual';
 
@@ -123,7 +123,7 @@ if ($role === 'admin') {
             <?php
             // ผู้ซื้อ ดูรายการซื้อ
             $carbon_used = $wallet ? $wallet['carbon_balance'] : 0;
-            $buyer_orders = mysqli_query($conn, "
+            $buyer_orders = pg_query($conn, "
                 SELECT o.buy_amount, o.price, o.created_at, o.status, 
                        l.type, l.province, l.image, l.full_tree_image, 
                        l.carbon_amount as total_l_carbon, l.tree_count, l.rice_area 
@@ -225,7 +225,7 @@ if ($role === 'admin') {
             </div>
             <?php
             // ผู้ขาย ดูรายการขาย (listings)
-            $seller_listings = mysqli_query($conn, "
+            $seller_listings = pg_query($conn, "
                 SELECT l.type, l.province, l.image, l.full_tree_image, l.carbon_amount, l.price_token, l.status, l.created_at 
                 FROM carbon_listings l 
                 WHERE l.seller_id = $user_id 
@@ -317,7 +317,7 @@ if ($role === 'admin') {
         <div class="card">
             <h3>📢 ประกาศล่าสุด</h3>
             <?php
-            $annQ = mysqli_query($conn, "SELECT * FROM system_announcements WHERE is_active = 1 ORDER BY created_at DESC LIMIT 5");
+            $annQ = pg_query($conn, "SELECT * FROM system_announcements WHERE is_active = 1 ORDER BY created_at DESC LIMIT 5");
             if (mysqli_num_rows($annQ) > 0) {
                 while ($ann = mysqli_fetch_assoc($annQ)) {
                     echo "<div style='margin-bottom:1.5rem; border-bottom:1px solid #eee; padding-bottom:1rem;'>";

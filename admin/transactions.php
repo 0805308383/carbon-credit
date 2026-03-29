@@ -7,7 +7,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
 }
 
 // ขยาย Query เพื่อดึงข้อมูลรายละเอียดโครงการและคู่ค้า
-$orders = mysqli_query($conn, "
+$orders = pg_query($conn, "
     SELECT 
         o.id,
         o.price,

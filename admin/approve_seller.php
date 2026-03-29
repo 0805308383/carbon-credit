@@ -14,7 +14,7 @@ if (!$request_id || !$action) {
 }
 
 // ดึงคำขอ
-$request = mysqli_query($conn, "
+$request = pg_query($conn, "
     SELECT * FROM seller_requests WHERE id = $request_id
 ");
 
@@ -34,26 +34,26 @@ if ($action === 'approve') {
     }
 
     // 1) เปลี่ยน role เป็น seller
-    mysqli_query($conn, "
+    pg_query($conn, "
         UPDATE users 
         SET role='seller'
         WHERE id=$user_id
     ");
 
     // 2) อัปเดตสถานะคำขอ
-    mysqli_query($conn, "
+    pg_query($conn, "
         UPDATE seller_requests
         SET status='approved', approved_at=NOW()
         WHERE id=$request_id
     ");
 
     // 3) สร้าง wallet ถ้ายังไม่มี (สำคัญสุด)
-    $checkWallet = mysqli_query($conn, "
+    $checkWallet = pg_query($conn, "
         SELECT id FROM wallets WHERE user_id = $user_id
     ");
 
     if (mysqli_num_rows($checkWallet) == 0) {
-        mysqli_query($conn, "
+        pg_query($conn, "
             INSERT INTO wallets (user_id, balance, token)
             VALUES ($user_id, 0, 0)
         ");
@@ -66,7 +66,7 @@ if ($action === 'approve') {
 } elseif ($action === 'reject') {
 
     // อัปเดตสถานะเป็น rejected
-    mysqli_query($conn, "
+    pg_query($conn, "
         UPDATE seller_requests
         SET status='rejected'
         WHERE id=$request_id

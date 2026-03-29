@@ -6,7 +6,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     exit('เฉพาะผู้ดูแลระบบ');
 }
 
-$orders = mysqli_query($conn, "
+$orders = pg_query($conn, "
     SELECT o.*, 
            b.phone AS buyer_phone, b.first_name AS buyer_fn, b.last_name AS buyer_ln, b.agency_name AS buyer_agency, b.user_type AS buyer_type,
            l.type AS listing_type, l.province, l.image, l.full_tree_image

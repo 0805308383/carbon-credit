@@ -21,12 +21,12 @@ if ($carbon_amount <= 0) {
 }
 
 // ... logic ...
-mysqli_query($conn, "
+pg_query($conn, "
     INSERT INTO carbon_transactions (user_id, activity_type, amount_input, token_generated)
     VALUES ($user_id, '$activity', $carbon_amount, $token)
 ");
 
-mysqli_query($conn, "
+pg_query($conn, "
     UPDATE wallets
     SET token = token + $token
     WHERE user_id = $user_id

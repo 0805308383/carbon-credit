@@ -10,7 +10,7 @@ $user_id = $_SESSION['user_id'];
 $transactions = [];
 
 // 1. ดึงข้อมูลการซื้อ (Buy Orders)
-$qBuy = mysqli_query($conn, "
+$qBuy = pg_query($conn, "
     SELECT 
         o.id, 
         o.buy_amount,
@@ -51,7 +51,7 @@ while ($row = mysqli_fetch_assoc($qBuy)) {
 }
 
 // 2. ดึงข้อมูลการลงขาย (Sell Listings)
-$qSell = mysqli_query($conn, "
+$qSell = pg_query($conn, "
     SELECT 
         l.id,
         l.type AS item_type,
@@ -69,7 +69,7 @@ while ($row = mysqli_fetch_assoc($qSell)) {
     $buyer = '-';
     $phone = '-';
     if ($row['status'] === 'sold') {
-        $qBuyer = mysqli_query($conn, "SELECT u.username, u.phone FROM orders o JOIN users u ON o.buyer_id = u.id WHERE o.listing_id = {$row['id']} AND o.status = 'approved' LIMIT 1");
+        $qBuyer = pg_query($conn, "SELECT u.username, u.phone FROM orders o JOIN users u ON o.buyer_id = u.id WHERE o.listing_id = {$row['id']} AND o.status = 'approved' LIMIT 1");
         if ($b = mysqli_fetch_assoc($qBuyer)) {
             $buyer = $b['username'];
             $phone = $b['phone'];

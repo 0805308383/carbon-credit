@@ -7,7 +7,7 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-$listings = mysqli_query($conn, "
+$listings = pg_query($conn, "
     SELECT l.*, u.phone, u.user_type, u.first_name, u.last_name, u.agency_name
     FROM carbon_listings l
     JOIN users u ON l.seller_id = u.id

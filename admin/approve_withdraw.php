@@ -11,7 +11,7 @@ if ($id <= 0) {
     exit('ID ไม่ถูกต้อง');
 }
 
-$q = mysqli_query($conn, "
+$q = pg_query($conn, "
     SELECT * FROM withdraw_requests
     WHERE id = $id AND status = 'pending'
 ");
@@ -21,7 +21,7 @@ if (!$data) {
     exit('ไม่พบคำขอ');
 }
 
-mysqli_query($conn, "
+pg_query($conn, "
     UPDATE withdraw_requests
     SET status = 'approved'
     WHERE id = $id

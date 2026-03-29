@@ -66,7 +66,7 @@ $slip_path = 'uploads/slips/' . $new_name;
 $sql = "INSERT INTO token_topups (user_id, token_amount, price, slip_image)
         VALUES ($user_id, $token, $price, '$slip_path')";
 
-if (!mysqli_query($conn, $sql)) {
+if (!pg_query($conn, $sql)) {
     $_SESSION['flash_alert'] = [
         'type' => 'error',
         'title' => 'ผิดพลาด',

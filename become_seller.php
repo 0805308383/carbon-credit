@@ -9,11 +9,11 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'buyer') {
 $user_id = $_SESSION['user_id'];
 
 // Check status
-$check = mysqli_query($conn, "SELECT * FROM seller_requests WHERE user_id = $user_id ORDER BY id DESC LIMIT 1");
+$check = pg_query($conn, "SELECT * FROM seller_requests WHERE user_id = $user_id ORDER BY id DESC LIMIT 1");
 $existing = mysqli_fetch_assoc($check);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && (!$existing || $existing['status'] === 'rejected')) {
-    mysqli_query($conn, "INSERT INTO seller_requests (user_id) VALUES ($user_id)");
+    pg_query($conn, "INSERT INTO seller_requests (user_id) VALUES ($user_id)");
     $_SESSION['flash_alert'] = [
         'type' => 'success',
         'title' => 'ส่งคำขอสำเร็จ',

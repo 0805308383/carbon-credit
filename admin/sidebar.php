@@ -2,7 +2,7 @@
 // Function to count rows for badges
 if (!function_exists('countRow')) {
     function countRow($conn, $sql) {
-        $q = mysqli_query($conn, $sql);
+        $q = pg_query($conn, $sql);
         if (!$q) return 0;
         $r = mysqli_fetch_assoc($q);
         return $r ? (int)$r['c'] : 0;

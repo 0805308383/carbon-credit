@@ -18,7 +18,7 @@ $sql_create = "CREATE TABLE IF NOT EXISTS ref_provinces (
     name_th VARCHAR(255) NOT NULL UNIQUE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
-if (!mysqli_query($conn, $sql_create)) {
+if (!pg_query($conn, $sql_create)) {
     die("Error creating table: " . mysqli_error($conn));
 }
 
@@ -27,7 +27,7 @@ if (!mysqli_query($conn, $sql_create)) {
 foreach ($provinces as $name) {
     $name = mysqli_real_escape_string($conn, $name);
     $sql = "INSERT IGNORE INTO ref_provinces (name_th) VALUES ('$name')";
-    mysqli_query($conn, $sql);
+    pg_query($conn, $sql);
 }
 
 echo "Successfully updated " . count($provinces) . " provinces.";

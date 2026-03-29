@@ -14,7 +14,7 @@ $queries = [
 ];
 
 foreach ($queries as $sql) {
-    if (mysqli_query($conn, $sql)) {
+    if (pg_query($conn, $sql)) {
         echo "<p style='color:green;'>Success: $sql</p>";
     } else {
         $error = mysqli_error($conn);

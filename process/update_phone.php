@@ -11,7 +11,7 @@ $user_id = $_SESSION['user_id'];
 $new_phone = $_POST['new_phone'];
 
 // Fetch user data
-$user = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM users WHERE id = $user_id"));
+$user = mysqli_fetch_assoc(pg_query($conn, "SELECT * FROM users WHERE id = $user_id"));
 
 $currentMonth = date('Y-m');
 $lastChangeDate = $user['last_phone_change_date'];
@@ -22,7 +22,7 @@ if ($lastChangeMonth !== $currentMonth) {
     // It's a new month, reset count logic is handled implicitly by just checking if we should reset 
     // actually better to update the DB to 0 if we detect it, but we can just use local variable for logic check
     // If I update DB here, it's safer.
-    mysqli_query($conn, "UPDATE users SET phone_change_count = 0 WHERE id = $user_id");
+    pg_query($conn, "UPDATE users SET phone_change_count = 0 WHERE id = $user_id");
     $user['phone_change_count'] = 0;
 }
 
@@ -51,7 +51,7 @@ if (mysqli_num_rows($check) > 0) {
 $currentDate = date('Y-m-d');
 $sql = "UPDATE users SET phone = '$new_phone', phone_change_count = phone_change_count + 1, last_phone_change_date = '$currentDate' WHERE id = $user_id";
 
-if (mysqli_query($conn, $sql)) {
+if (pg_query($conn, $sql)) {
     $_SESSION['phone'] = $new_phone;
     $_SESSION['flash_alert'] = [
         'type' => 'success',

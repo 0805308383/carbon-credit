@@ -14,7 +14,7 @@ if (!$id || !$action) {
 }
 
 if ($action === 'approve') {
-    mysqli_query($conn, "
+    pg_query($conn, "
         UPDATE carbon_listings
         SET status='approved'
         WHERE id=$id
@@ -27,7 +27,7 @@ if ($action === 'approve') {
 }
 
 if ($action === 'reject') {
-    mysqli_query($conn, "
+    pg_query($conn, "
         UPDATE carbon_listings
         SET status='rejected'
         WHERE id=$id

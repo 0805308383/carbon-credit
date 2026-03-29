@@ -24,7 +24,7 @@ if (empty($ids)) {
 
 $idList = implode(',', $ids);
 
-$q = mysqli_query($conn, "
+$q = pg_query($conn, "
     SELECT id, type, tree_count, rice_area, remaining_amount, status 
     FROM carbon_listings 
     WHERE id IN ($idList)

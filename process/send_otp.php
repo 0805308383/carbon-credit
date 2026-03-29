@@ -17,7 +17,7 @@ $username = $_POST['username'];
 $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
 // Check for duplicates
-$check = mysqli_query($conn, "SELECT * FROM users WHERE phone = '$phone' OR username = '$username'");
+$check = pg_query($conn, "SELECT * FROM users WHERE phone = '$phone' OR username = '$username'");
 if (mysqli_num_rows($check) > 0) {
     $row = mysqli_fetch_assoc($check);
     $msg = '';
@@ -97,7 +97,7 @@ $expire = date("Y-m-d H:i:s", strtotime("+5 minutes"));
 $sql = "INSERT INTO otp_verifications (phone, otp_code, expires_at)
         VALUES ('$phone', '$otp', '$expire')";
 
-if (!mysqli_query($conn, $sql)) {
+if (!pg_query($conn, $sql)) {
     die(mysqli_error($conn));
 }
 

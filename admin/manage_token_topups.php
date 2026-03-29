@@ -6,7 +6,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     exit('เฉพาะผู้ดูแลระบบ');
 }
 
-$topups = mysqli_query($conn, "
+$topups = pg_query($conn, "
     SELECT t.*, u.phone 
     FROM token_topups t
     JOIN users u ON t.user_id = u.id

@@ -16,7 +16,7 @@ if ($order_id <= 0) {
 /* ======================
    1) ดึงข้อมูล order
 ====================== */
-$qOrder = mysqli_query($conn, "
+$qOrder = pg_query($conn, "
     SELECT * FROM orders
     WHERE id = $order_id AND status = 'pending_admin'
 ");
@@ -33,7 +33,7 @@ $price      = (float)$order['price'];
 /* ======================
    2) ดึง listing + seller
 ====================== */
-$qListing = mysqli_query($conn, "
+$qListing = pg_query($conn, "
     SELECT seller_id, status, remaining_amount, type, tree_count, rice_area, carbon_amount, province
     FROM carbon_listings
     WHERE id = $listing_id
@@ -55,7 +55,7 @@ if ($buy_amount <= 0) {
 }
 
 if ($buy_amount > $current_rem) {
-    mysqli_query($conn, "
+    pg_query($conn, "
         UPDATE orders SET status='rejected'
         WHERE id = $order_id
     ");
@@ -69,19 +69,19 @@ $capacity = ($listing['type'] === 'tree') ? $listing['tree_count'] : $listing['r
 $exact_carbon_bought = ($buy_amount / ($capacity ?: 1)) * $listing['carbon_amount'];
 
 // ดึงข้อมูลผู้ซื้อสำหรับส่งอีเมล
-$qBuyer = mysqli_query($conn, "SELECT email, first_name, last_name FROM users WHERE id = $buyer_id");
+$qBuyer = pg_query($conn, "SELECT email, first_name, last_name FROM users WHERE id = $buyer_id");
 $buyerInfo = mysqli_fetch_assoc($qBuyer);
 
 /* ======================
    3) ดึง wallet buyer
 ====================== */
-$qBuyerWallet = mysqli_query($conn, "
+$qBuyerWallet = pg_query($conn, "
     SELECT token FROM wallets WHERE user_id = $buyer_id
 ");
 $buyerWallet = mysqli_fetch_assoc($qBuyerWallet);
 
 if (!$buyerWallet || $buyerWallet['token'] < $price) {
-    mysqli_query($conn, "
+    pg_query($conn, "
         UPDATE orders SET status='rejected'
         WHERE id = $order_id
     ");
@@ -91,12 +91,12 @@ if (!$buyerWallet || $buyerWallet['token'] < $price) {
 /* ======================
    4) ดึง / สร้าง wallet seller
 ====================== */
-$qSellerWallet = mysqli_query($conn, "
+$qSellerWallet = pg_query($conn, "
     SELECT token FROM wallets WHERE user_id = $seller_id
 ");
 
 if (mysqli_num_rows($qSellerWallet) == 0) {
-    mysqli_query($conn, "
+    pg_query($conn, "
         INSERT INTO wallets (user_id, balance, token)
         VALUES ($seller_id, 0, 0)
     ");
@@ -105,10 +105,10 @@ if (mysqli_num_rows($qSellerWallet) == 0) {
 /* ======================
    เริ่ม Transaction
 ====================== */
-mysqli_query($conn, "START TRANSACTION");
+pg_query($conn, "START TRANSACTION");
 
 /* 5) หัก Token buyer และเพิ่ม carbon_balance */
-mysqli_query($conn, "
+pg_query($conn, "
     UPDATE wallets
     SET token = token - $price,
         carbon_balance = carbon_balance + $exact_carbon_bought
@@ -116,33 +116,33 @@ mysqli_query($conn, "
 ");
 
 /* 6) เติม Token seller */
-mysqli_query($conn, "
+pg_query($conn, "
     UPDATE wallets
     SET token = token + $price
     WHERE user_id = $seller_id
 ");
 
 /* 7) อัปเดต order */
-mysqli_query($conn, "
+pg_query($conn, "
     UPDATE orders
     SET status='approved'
     WHERE id = $order_id
 ");
 
 /* 8) หักยอดคงเหลือและปิด listing (ถ้ายังไม่ได้ปิด) */
-mysqli_query($conn, "
+pg_query($conn, "
     UPDATE carbon_listings
     SET remaining_amount = remaining_amount - $buy_amount
     WHERE id = $listing_id
 ");
 
-mysqli_query($conn, "
+pg_query($conn, "
     UPDATE carbon_listings
     SET status='sold'
     WHERE id = $listing_id AND remaining_amount <= 0
 ");
 
-mysqli_query($conn, "COMMIT");
+pg_query($conn, "COMMIT");
 
 /* ส่งอีเมลยืนยัน */
 if ($buyerInfo && !empty($buyerInfo['email'])) {

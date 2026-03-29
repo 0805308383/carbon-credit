@@ -6,7 +6,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     exit('เฉพาะผู้ดูแลระบบ');
 }
 
-$users = mysqli_query($conn, "SELECT * FROM users ORDER BY created_at DESC");
+$users = pg_query($conn, "SELECT * FROM users ORDER BY created_at DESC");
 ?>
 <!DOCTYPE html>
 <html lang="th">

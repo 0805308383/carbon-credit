@@ -6,7 +6,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] === 'admin') {
 }
 
 $user_id = $_SESSION['user_id'];
-$wallet = mysqli_fetch_assoc(mysqli_query($conn, "SELECT token FROM wallets WHERE user_id = $user_id"));
+$wallet = mysqli_fetch_assoc(pg_query($conn, "SELECT token FROM wallets WHERE user_id = $user_id"));
 ?>
 <!DOCTYPE html>
 <html lang="th">

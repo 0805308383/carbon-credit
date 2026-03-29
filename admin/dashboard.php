@@ -7,7 +7,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
 }
 
 function countRow($conn, $sql) {
-    $q = mysqli_query($conn, $sql);
+    $q = pg_query($conn, $sql);
     if (!$q) return 0;
     $r = mysqli_fetch_assoc($q);
     return $r ? (int)$r['c'] : 0;
@@ -24,7 +24,7 @@ $pendingWithdraws = countRow($conn, "SELECT COUNT(*) AS c FROM withdraw_requests
 // Chart Data: Sales Volume
 $salesData = [];
 $salesLabels = [];
-$qSales = mysqli_query($conn, "
+$qSales = pg_query($conn, "
     SELECT DATE_FORMAT(created_at, '%Y-%m') AS m, SUM(price) AS total 
     FROM orders 
     WHERE status = 'approved' 
@@ -40,7 +40,7 @@ while ($r = mysqli_fetch_assoc($qSales)) {
 // Chart Data: Carbon Usage
 $carbonData = [];
 $carbonLabels = [];
-$qCarbon = mysqli_query($conn, "
+$qCarbon = pg_query($conn, "
     SELECT DATE_FORMAT(o.created_at, '%Y-%m') AS m, SUM(l.carbon_amount) AS total 
     FROM orders o 
     JOIN carbon_listings l ON o.listing_id = l.id 
@@ -58,7 +58,7 @@ while ($r = mysqli_fetch_assoc($qCarbon)) {
 $topProvinces = [];
 $totalListingsAll = countRow($conn, "SELECT COUNT(*) AS c FROM carbon_listings");
 
-$qProvinceSales = mysqli_query($conn, "
+$qProvinceSales = pg_query($conn, "
     SELECT 
         l.province, 
         SUM(o.price) AS total_sales,
@@ -72,7 +72,7 @@ $qProvinceSales = mysqli_query($conn, "
 ");
 
 $provincesWithListings = [];
-$qProv = mysqli_query($conn, "SELECT DISTINCT province FROM carbon_listings WHERE province IS NOT NULL AND province != ''");
+$qProv = pg_query($conn, "SELECT DISTINCT province FROM carbon_listings WHERE province IS NOT NULL AND province != ''");
 while ($p = mysqli_fetch_assoc($qProv)) {
     $provincesWithListings[] = $p['province'];
 }

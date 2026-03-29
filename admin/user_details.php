@@ -12,7 +12,7 @@ if (!isset($_GET['id'])) {
 }
 
 $id = (int)$_GET['id'];
-$query = mysqli_query($conn, "
+$query = pg_query($conn, "
     SELECT u.*, b.bank_name, b.account_number AS bank_account
     FROM users u 
     LEFT JOIN bank_accounts b ON u.id = b.user_id 

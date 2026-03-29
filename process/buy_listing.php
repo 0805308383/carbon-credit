@@ -10,7 +10,7 @@ $buyer_id   = (int)$_SESSION['user_id'];
 $listing_id = (int)($_REQUEST['id'] ?? 0);
 $buy_amount = (float)($_REQUEST['buy_amount'] ?? 0);
 
-$q = mysqli_query($conn, "
+$q = pg_query($conn, "
     SELECT id, type, tree_count, rice_area, carbon_amount, price_token, remaining_amount, status 
     FROM carbon_listings
     WHERE id = $listing_id AND status = 'approved'
@@ -62,7 +62,7 @@ if ($buy_amount <= 0) {
 }
 
 // Check Buyer Wallet Balance
-$wallet_q = mysqli_query($conn, "SELECT token FROM wallets WHERE user_id = $buyer_id");
+$wallet_q = pg_query($conn, "SELECT token FROM wallets WHERE user_id = $buyer_id");
 $wallet = mysqli_fetch_assoc($wallet_q);
 
 if (!$wallet || (float)$wallet['token'] < $final_price) {

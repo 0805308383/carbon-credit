@@ -6,7 +6,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     exit('เฉพาะผู้ดูแลระบบ');
 }
 
-$withdraws = mysqli_query($conn, "
+$withdraws = pg_query($conn, "
     SELECT w.*, u.phone 
     FROM withdraw_requests w
     JOIN users u ON w.user_id = u.id

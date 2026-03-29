@@ -6,7 +6,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     exit('เฉพาะผู้ดูแลระบบ');
 }
 
-$listings = mysqli_query($conn, "
+$listings = pg_query($conn, "
     SELECT l.*, u.phone
     FROM carbon_listings l
     JOIN users u ON l.seller_id = u.id

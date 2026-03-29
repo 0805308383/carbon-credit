@@ -23,7 +23,7 @@ if (!isset($_SESSION['captcha']) || $captcha != $_SESSION['captcha']) {
 unset($_SESSION['captcha']); // ใช้แล้วลบทิ้งทันที
 
 // ดึงข้อมูล user
-$result = mysqli_query($conn, "
+$result = pg_query($conn, "
     SELECT * FROM users WHERE username = '$username' LIMIT 1
 ");
 
@@ -31,7 +31,7 @@ $user = mysqli_fetch_assoc($result);
 
 // ไม่พบผู้ใช้
 if (!$user) {
-    mysqli_query($conn, "INSERT INTO logs_login (user_id, ip_address, status) VALUES (NULL, '{$_SERVER['REMOTE_ADDR']}', 'failed')");
+    pg_query($conn, "INSERT INTO logs_login (user_id, ip_address, status) VALUES (NULL, '{$_SERVER['REMOTE_ADDR']}', 'failed')");
     $_SESSION['flash_alert'] = [
         'type' => 'error',
         'title' => 'ผิดพลาด',
@@ -43,7 +43,7 @@ if (!$user) {
 
 // ตรวจรหัสผ่าน
 if (!password_verify($password, $user['password'])) {
-    mysqli_query($conn, "INSERT INTO logs_login (user_id, ip_address, status) VALUES ('{$user['id']}', '{$_SERVER['REMOTE_ADDR']}', 'failed')");
+    pg_query($conn, "INSERT INTO logs_login (user_id, ip_address, status) VALUES ('{$user['id']}', '{$_SERVER['REMOTE_ADDR']}', 'failed')");
     $_SESSION['flash_alert'] = [
         'type' => 'error',
         'title' => 'ผิดพลาด',
@@ -70,7 +70,7 @@ $_SESSION['username'] = $user['username'];
 $_SESSION['role']    = $user['role'];
 
 // Log success
-mysqli_query($conn, "INSERT INTO logs_login (user_id, ip_address, status) VALUES ('{$user['id']}', '{$_SERVER['REMOTE_ADDR']}', 'success')");
+pg_query($conn, "INSERT INTO logs_login (user_id, ip_address, status) VALUES ('{$user['id']}', '{$_SERVER['REMOTE_ADDR']}', 'success')");
 
 // ❌ ห้ามเช็ก OTP ตรงนี้เด็ดขาด
 // ❌ ห้าม redirect ไป verify_otp.php

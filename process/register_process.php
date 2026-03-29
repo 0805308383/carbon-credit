@@ -11,7 +11,7 @@ $inputOtp = $_POST['otp'];
 $phone = $_SESSION['register_data']['phone'];
 
 // ตรวจ OTP
-$q = mysqli_query($conn, "
+$q = pg_query($conn, "
     SELECT * FROM otp_verifications
     WHERE phone='$phone'
     ORDER BY id DESC LIMIT 1
@@ -31,7 +31,7 @@ if (!$data || $data['otp_code'] != $inputOtp) {
 
 // 🔒 ตรวจว่ามีผู้ใช้นี้แล้วหรือยัง 
 $username = $_SESSION['register_data']['username'];
-$checkUser = mysqli_query($conn, "
+$checkUser = pg_query($conn, "
     SELECT id FROM users WHERE phone='$phone' OR username='$username'
 ");
 
@@ -80,12 +80,12 @@ $sql = "
         $h_poa, $p_fn, $p_ln, $p_pos, $p_doc
     )
 ";
-mysqli_query($conn, $sql) or die(mysqli_error($conn));
+pg_query($conn, $sql) or die(mysqli_error($conn));
 
 $user_id = mysqli_insert_id($conn);
 
 // INSERT bank
-mysqli_query($conn, "
+pg_query($conn, "
     INSERT INTO bank_accounts (user_id, bank_name, account_number, account_name)
     VALUES (
         $user_id,
@@ -107,7 +107,7 @@ $_SESSION['flash_alert'] = [
 ];
 
 // ลบ OTP ทิ้งหลัง verify สำเร็จ
-mysqli_query($conn, "
+pg_query($conn, "
     DELETE FROM otp_verifications WHERE phone='$phone'
 ");
 

@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 // ดำเนินการลบ
 if (isset($_GET['delete'])) {
     $id = (int)$_GET['delete'];
-    mysqli_query($conn, "DELETE FROM system_announcements WHERE id = $id");
+    pg_query($conn, "DELETE FROM system_announcements WHERE id = $id");
     $_SESSION['flash_alert'] = ['type' => 'success', 'title' => 'ลบสำเร็จ', 'message' => 'ประกาศถูกลบแล้ว'];
     header("Location: manage_announcements.php");
     exit;
@@ -18,7 +18,7 @@ if (isset($_GET['delete'])) {
 // ดำเนินการเปลี่ยนสถานะ
 if (isset($_GET['toggle_active'])) {
     $id = (int)$_GET['toggle_active'];
-    mysqli_query($conn, "UPDATE system_announcements SET is_active = NOT is_active WHERE id = $id");
+    pg_query($conn, "UPDATE system_announcements SET is_active = NOT is_active WHERE id = $id");
     $_SESSION['flash_alert'] = ['type' => 'success', 'title' => 'เปลี่ยนสถานะ', 'message' => 'อัปเดตสถานะสำเร็จ'];
     header("Location: manage_announcements.php");
     exit;
@@ -41,18 +41,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
     
     $imgSql = $imagePath ? "'$imagePath'" : "NULL";
-    mysqli_query($conn, "INSERT INTO system_announcements (title, content, image, is_active) VALUES ('$title', '$content', $imgSql, $is_active)");
+    pg_query($conn, "INSERT INTO system_announcements (title, content, image, is_active) VALUES ('$title', '$content', $imgSql, $is_active)");
     $_SESSION['flash_alert'] = ['type' => 'success', 'title' => 'สำเร็จ', 'message' => 'เพิ่มประกาศแล้ว'];
     header("Location: manage_announcements.php");
     exit;
 }
 
 // โหลดรายการทั้งหมด
-$query = mysqli_query($conn, "SELECT * FROM system_announcements ORDER BY created_at DESC");
+$query = pg_query($conn, "SELECT * FROM system_announcements ORDER BY created_at DESC");
 
 // ขอดึงค่าตัวเลขเพื่อ badge ใน sidebar
 function countRow($conn, $sql) {
-    $q = mysqli_query($conn, $sql);
+    $q = pg_query($conn, $sql);
     if (!$q) return 0;
     $r = mysqli_fetch_assoc($q);
     return $r ? (int)$r['c'] : 0;

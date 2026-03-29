@@ -11,7 +11,7 @@ $token_amount = (float)$_POST['token_amount'];
 
 $rate = 1; // 1 Token = 1 บาท
 
-$wallet = mysqli_fetch_assoc(mysqli_query($conn, "
+$wallet = mysqli_fetch_assoc(pg_query($conn, "
     SELECT token, balance FROM wallets WHERE user_id = $user_id
 "));
 
@@ -27,30 +27,30 @@ if ($token_amount <= 0 || $token_amount > $wallet['token']) {
 
 $money = $token_amount * $rate;
 
-mysqli_query($conn, "START TRANSACTION");
+pg_query($conn, "START TRANSACTION");
 
 // หัก token
-mysqli_query($conn, "
+pg_query($conn, "
     UPDATE wallets
     SET token = token - $token_amount
     WHERE user_id = $user_id
 ");
 
 // เพิ่ม balance
-mysqli_query($conn, "
+pg_query($conn, "
     UPDATE wallets
     SET balance = balance + $money
     WHERE user_id = $user_id
 ");
 
 // บันทึกประวัติ
-mysqli_query($conn, "
+pg_query($conn, "
     INSERT INTO token_conversions
     (user_id, token_amount, rate, money_amount)
     VALUES ($user_id, $token_amount, $rate, $money)
 ");
 
-mysqli_query($conn, "COMMIT");
+pg_query($conn, "COMMIT");
 
 $_SESSION['flash_alert'] = [
     'type' => 'success',

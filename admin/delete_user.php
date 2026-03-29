@@ -25,7 +25,7 @@ if (!$user_id || empty($reason)) {
 $reason = mysqli_real_escape_string($conn, $reason);
 
 // ตรวจสอบว่าผู้ใช้มีอยู่และไม่ใช่ Admin
-$check_query = mysqli_query($conn, "SELECT role FROM users WHERE id = $user_id");
+$check_query = pg_query($conn, "SELECT role FROM users WHERE id = $user_id");
 if (mysqli_num_rows($check_query) == 0) {
     echo json_encode(['success' => false, 'message' => 'ไม่พบผู้ใช้งาน']);
     exit;
@@ -39,7 +39,7 @@ if ($user['role'] === 'admin') {
 
 // อัปเดตสถานะเป็น banned
 $update_query = "UPDATE users SET status = 'banned', banned_reason = '$reason' WHERE id = $user_id";
-if (mysqli_query($conn, $update_query)) {
+if (pg_query($conn, $update_query)) {
     echo json_encode(['success' => true]);
 } else {
     echo json_encode(['success' => false, 'message' => 'เกิดข้อผิดพลาดในฐานข้อมูล']);

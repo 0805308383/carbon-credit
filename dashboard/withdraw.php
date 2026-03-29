@@ -7,8 +7,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] === 'admin') {
 }
 
 $user_id = $_SESSION['user_id'];
-$bank = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM bank_accounts WHERE user_id = $user_id LIMIT 1"));
-$wallet = mysqli_fetch_assoc(mysqli_query($conn, "SELECT balance FROM wallets WHERE user_id = $user_id"));
+$bank = mysqli_fetch_assoc(pg_query($conn, "SELECT * FROM bank_accounts WHERE user_id = $user_id LIMIT 1"));
+$wallet = mysqli_fetch_assoc(pg_query($conn, "SELECT balance FROM wallets WHERE user_id = $user_id"));
 ?>
 <!DOCTYPE html>
 <html lang="th">

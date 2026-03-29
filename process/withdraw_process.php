@@ -16,7 +16,7 @@ if ($amount <= 0) {
 /* ======================
    1) ตรวจ wallet
 ====================== */
-$wallet = mysqli_fetch_assoc(mysqli_query($conn, "
+$wallet = mysqli_fetch_assoc(pg_query($conn, "
     SELECT balance FROM wallets WHERE user_id = $user_id
 "));
 
@@ -33,7 +33,7 @@ if (!$wallet || $wallet['balance'] < $amount) {
 /* ======================
    2) ดึงบัญชีธนาคาร (ใช้ชื่อ column ให้ตรง DB)
 ====================== */
-$bank = mysqli_fetch_assoc(mysqli_query($conn, "
+$bank = mysqli_fetch_assoc(pg_query($conn, "
     SELECT bank_name, account_number, account_name
     FROM bank_accounts
     WHERE user_id = $user_id
@@ -49,12 +49,12 @@ if (!$bank) {
     exit;
 }
 
-mysqli_query($conn, "START TRANSACTION");
+pg_query($conn, "START TRANSACTION");
 
 /* ======================
    3) หักเงินจาก wallet
 ====================== */
-mysqli_query($conn, "
+pg_query($conn, "
     UPDATE wallets
     SET balance = balance - $amount
     WHERE user_id = $user_id
@@ -63,7 +63,7 @@ mysqli_query($conn, "
 /* ======================
    4) บันทึกคำขอถอนเงิน
 ====================== */
-mysqli_query($conn, "
+pg_query($conn, "
     INSERT INTO withdraw_requests
         (user_id, amount, bank, bank_account, account_name, status)
     VALUES
@@ -80,7 +80,7 @@ mysqli_query($conn, "
 /* ======================
    5) commit
 ====================== */
-mysqli_query($conn, "COMMIT");
+pg_query($conn, "COMMIT");
 
 $_SESSION['flash_alert'] = [
     'type' => 'success',

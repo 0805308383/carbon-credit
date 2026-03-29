@@ -8,7 +8,7 @@ $action = $_GET['action'];
 
 $status = $action === 'approve' ? 'approved' : 'rejected';
 
-mysqli_query($conn, "
+pg_query($conn, "
 UPDATE carbon_listings SET status='$status' WHERE id=$id
 ");
 

@@ -6,7 +6,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     exit('เฉพาะผู้ดูแลระบบ');
 }
 
-$requests = mysqli_query($conn, "
+$requests = pg_query($conn, "
     SELECT r.*, u.phone 
     FROM seller_requests r
     JOIN users u ON r.user_id = u.id
