@@ -22,16 +22,16 @@ if (!$user_id || empty($reason)) {
 }
 
 // ป้องกัน SQL Injection
-$reason = mysqli_real_escape_string($conn, $reason);
+$reason = pg_real_escape_string($conn, $reason);
 
 // ตรวจสอบว่าผู้ใช้มีอยู่และไม่ใช่ Admin
 $check_query = pg_query($conn, "SELECT role FROM users WHERE id = $user_id");
-if (mysqli_num_rows($check_query) == 0) {
+if (pg_num_rows($check_query) == 0) {
     echo json_encode(['success' => false, 'message' => 'ไม่พบผู้ใช้งาน']);
     exit;
 }
 
-$user = mysqli_fetch_assoc($check_query);
+$user = pg_fetch_assoc($check_query);
 if ($user['role'] === 'admin') {
     echo json_encode(['success' => false, 'message' => 'ไม่สามารถระงับบัญชี Admin ได้']);
     exit;

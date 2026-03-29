@@ -50,7 +50,7 @@ $orders = pg_query($conn, "
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = mysqli_fetch_assoc($orders)): 
+                    <?php while ($row = pg_fetch_assoc($orders)): 
                         $img = !empty($row['full_tree_image']) ? $row['full_tree_image'] : $row['image'];
                         
                         // Format buyer name
@@ -111,7 +111,7 @@ $orders = pg_query($conn, "
                     </tr>
                     <?php endwhile; ?>
                     
-                    <?php if (mysqli_num_rows($orders) == 0): ?>
+                    <?php if (pg_num_rows($orders) == 0): ?>
                         <tr>
                             <td colspan="6" style="text-align:center; padding: 4rem;">
                                 <div style="font-size: 3rem; margin-bottom: 1rem;">🎉</div>

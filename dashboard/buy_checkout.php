@@ -14,7 +14,7 @@ $q = pg_query($conn, "
     JOIN users u ON l.seller_id = u.id
     WHERE l.id = $id AND l.status = 'approved'
 ");
-$row = mysqli_fetch_assoc($q);
+$row = pg_fetch_assoc($q);
 
 if (!$row) {
     $_SESSION['flash_alert'] = ['type' => 'error', 'title' => 'ผิดพลาด', 'message' => 'ไม่พบรายการที่ต้องการดึงข้อมูล'];

@@ -11,7 +11,7 @@ $user_id = $_SESSION['user_id'];
 $new_phone = $_POST['new_phone'];
 
 // Fetch user data
-$user = mysqli_fetch_assoc(pg_query($conn, "SELECT * FROM users WHERE id = $user_id"));
+$user = pg_fetch_assoc(pg_query($conn, "SELECT * FROM users WHERE id = $user_id"));
 
 $currentMonth = date('Y-m');
 $lastChangeDate = $user['last_phone_change_date'];
@@ -37,7 +37,7 @@ if ($user['phone_change_count'] >= 2) {
 }
 
 // ... duplicate check ...
-if (mysqli_num_rows($check) > 0) {
+if (pg_num_rows($check) > 0) {
     $_SESSION['flash_alert'] = [
         'type' => 'error',
         'title' => 'ผิดพลาด',

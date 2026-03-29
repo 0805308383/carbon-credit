@@ -11,7 +11,7 @@ $token_amount = (float)$_POST['token_amount'];
 
 $rate = 1; // 1 Token = 1 บาท
 
-$wallet = mysqli_fetch_assoc(pg_query($conn, "
+$wallet = pg_fetch_assoc(pg_query($conn, "
     SELECT token, balance FROM wallets WHERE user_id = $user_id
 "));
 

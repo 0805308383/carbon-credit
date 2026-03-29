@@ -32,7 +32,7 @@ $q = pg_query($conn, "
 
 $data = [];
 if ($q) {
-    while ($row = mysqli_fetch_assoc($q)) {
+    while ($row = pg_fetch_assoc($q)) {
         $rem = $row['remaining_amount'] ?? ($row['type'] === 'tree' ? $row['tree_count'] : $row['rice_area']);
         $data[$row['id']] = [
             'remaining_amount' => (float)$rem,

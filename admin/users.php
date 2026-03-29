@@ -42,7 +42,7 @@ $users = pg_query($conn, "SELECT * FROM users ORDER BY created_at DESC");
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = mysqli_fetch_assoc($users)): ?>
+                    <?php while ($row = pg_fetch_assoc($users)): ?>
                     <tr>
                         <td style="text-align: center; color: var(--admin-text-muted);">#<?= $row['id']; ?></td>
                         <td>

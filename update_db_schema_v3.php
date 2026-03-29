@@ -17,7 +17,7 @@ foreach ($queries as $sql) {
     if (pg_query($conn, $sql)) {
         echo "<p style='color:green;'>Success: $sql</p>";
     } else {
-        $error = mysqli_error($conn);
+        $error = pg_error($conn);
         if (strpos($error, 'Duplicate column name') !== false) {
             echo "<p style='color:blue;'>Skipping: Column already exists - $sql</p>";
         } else {

@@ -76,14 +76,14 @@ $listings = pg_query($conn, "
         </header>
 
         <div class="container-fluid">
-            <?php if (mysqli_num_rows($listings) == 0): ?>
+            <?php if (pg_num_rows($listings) == 0): ?>
                 <div style="text-align:center; padding:4rem; color:var(--text-light); background:white; border-radius:12px; border:1px solid var(--border);">
                     <p style="font-size:1.2rem;">ยังไม่มีรายการขายในขณะนี้</p>
                 </div>
             <?php endif; ?>
 
             <div class="marketplace-grid">
-            <?php while ($row = mysqli_fetch_assoc($listings)): ?>
+            <?php while ($row = pg_fetch_assoc($listings)): ?>
                 <div class="listing-card">
                     <?php 
                     $displayImage = !empty($row['full_tree_image']) ? $row['full_tree_image'] : $row['image'];

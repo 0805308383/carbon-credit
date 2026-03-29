@@ -18,7 +18,7 @@ $request = pg_query($conn, "
     SELECT * FROM seller_requests WHERE id = $request_id
 ");
 
-$data = mysqli_fetch_assoc($request);
+$data = pg_fetch_assoc($request);
 if (!$data) {
     exit('ไม่พบคำขอ');
 }
@@ -52,7 +52,7 @@ if ($action === 'approve') {
         SELECT id FROM wallets WHERE user_id = $user_id
     ");
 
-    if (mysqli_num_rows($checkWallet) == 0) {
+    if (pg_num_rows($checkWallet) == 0) {
         pg_query($conn, "
             INSERT INTO wallets (user_id, balance, token)
             VALUES ($user_id, 0, 0)

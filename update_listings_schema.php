@@ -13,12 +13,12 @@ $sql = "ALTER TABLE `carbon_listings`
 if (pg_query($conn, $sql)) {
     echo "Database schema updated successfully.\n";
 } else {
-    echo "Error updating database schema: " . mysqli_error($conn) . "\n";
+    echo "Error updating database schema: " . pg_error($conn) . "\n";
 }
 
 // Ensure ref_provinces has data (optional but good for testing)
 $check = pg_query($conn, "SELECT COUNT(*) as count FROM ref_provinces");
-$row = mysqli_fetch_assoc($check);
+$row = pg_fetch_assoc($check);
 if ($row['count'] == 0) {
     echo "Warning: ref_provinces is empty. Please ensure you have province data.\n";
 }

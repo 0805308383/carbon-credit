@@ -16,7 +16,7 @@ if ($amount <= 0) {
 /* ======================
    1) ตรวจ wallet
 ====================== */
-$wallet = mysqli_fetch_assoc(pg_query($conn, "
+$wallet = pg_fetch_assoc(pg_query($conn, "
     SELECT balance FROM wallets WHERE user_id = $user_id
 "));
 
@@ -33,7 +33,7 @@ if (!$wallet || $wallet['balance'] < $amount) {
 /* ======================
    2) ดึงบัญชีธนาคาร (ใช้ชื่อ column ให้ตรง DB)
 ====================== */
-$bank = mysqli_fetch_assoc(pg_query($conn, "
+$bank = pg_fetch_assoc(pg_query($conn, "
     SELECT bank_name, account_number, account_name
     FROM bank_accounts
     WHERE user_id = $user_id

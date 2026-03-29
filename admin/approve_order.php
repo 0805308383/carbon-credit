@@ -20,7 +20,7 @@ $qOrder = pg_query($conn, "
     SELECT * FROM orders
     WHERE id = $order_id AND status = 'pending_admin'
 ");
-$order = mysqli_fetch_assoc($qOrder);
+$order = pg_fetch_assoc($qOrder);
 
 if (!$order) {
     exit('ไม่พบคำสั่งซื้อ หรือถูกจัดการแล้ว');
@@ -38,7 +38,7 @@ $qListing = pg_query($conn, "
     FROM carbon_listings
     WHERE id = $listing_id
 ");
-$listing = mysqli_fetch_assoc($qListing);
+$listing = pg_fetch_assoc($qListing);
 
 if (!$listing) {
     exit('รายการขายไม่ถูกต้อง');
@@ -70,7 +70,7 @@ $exact_carbon_bought = ($buy_amount / ($capacity ?: 1)) * $listing['carbon_amoun
 
 // ดึงข้อมูลผู้ซื้อสำหรับส่งอีเมล
 $qBuyer = pg_query($conn, "SELECT email, first_name, last_name FROM users WHERE id = $buyer_id");
-$buyerInfo = mysqli_fetch_assoc($qBuyer);
+$buyerInfo = pg_fetch_assoc($qBuyer);
 
 /* ======================
    3) ดึง wallet buyer
@@ -78,7 +78,7 @@ $buyerInfo = mysqli_fetch_assoc($qBuyer);
 $qBuyerWallet = pg_query($conn, "
     SELECT token FROM wallets WHERE user_id = $buyer_id
 ");
-$buyerWallet = mysqli_fetch_assoc($qBuyerWallet);
+$buyerWallet = pg_fetch_assoc($qBuyerWallet);
 
 if (!$buyerWallet || $buyerWallet['token'] < $price) {
     pg_query($conn, "
@@ -95,7 +95,7 @@ $qSellerWallet = pg_query($conn, "
     SELECT token FROM wallets WHERE user_id = $seller_id
 ");
 
-if (mysqli_num_rows($qSellerWallet) == 0) {
+if (pg_num_rows($qSellerWallet) == 0) {
     pg_query($conn, "
         INSERT INTO wallets (user_id, balance, token)
         VALUES ($seller_id, 0, 0)

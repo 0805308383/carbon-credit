@@ -118,7 +118,7 @@ $orders = pg_query($conn, "
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = mysqli_fetch_assoc($orders)): 
+                    <?php while ($row = pg_fetch_assoc($orders)): 
                         // คำนวณปริมาณคาร์บอนที่โอนย้ายจริง
                         $capacity = ($row['item_type'] == 'tree') ? $row['tree_count'] : $row['rice_area'];
                         $order_carbon = ($row['buy_amount'] / ($capacity ?: 1)) * $row['total_l_carbon'];
@@ -198,7 +198,7 @@ $orders = pg_query($conn, "
                     </tr>
                     <?php endwhile; ?>
                     
-                    <?php if (mysqli_num_rows($orders) == 0): ?>
+                    <?php if (pg_num_rows($orders) == 0): ?>
                         <tr><td colspan="7" style="text-align:center; padding: 4rem; color: var(--admin-text-muted);">ไม่พบรายการธุรกรรมในขณะนี้ 🎉</td></tr>
                     <?php endif; ?>
                 </tbody>

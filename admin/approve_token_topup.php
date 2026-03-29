@@ -14,20 +14,20 @@ $q = pg_query($conn, "
     SELECT * FROM token_topups
     WHERE id = $id AND status='pending_admin'
 ");
-$topup = mysqli_fetch_assoc($q);
+$topup = pg_fetch_assoc($q);
 if (!$topup) exit('ไม่พบรายการ');
 
 $user_id = (int)$topup['user_id'];
 $token   = (float)$topup['token_amount'];
 
-mysqli_begin_transaction($conn);
+pg_begin_transaction($conn);
 
 try {
     // 🔥 สร้าง wallet ถ้ายังไม่มี (จุดที่ขาด)
     $check = pg_query($conn, "
         SELECT id FROM wallets WHERE user_id = $user_id
     ");
-    if (mysqli_num_rows($check) == 0) {
+    if (pg_num_rows($check) == 0) {
         pg_query($conn, "
             INSERT INTO wallets (user_id, balance, token)
             VALUES ($user_id, 0, 0)
@@ -48,10 +48,10 @@ try {
         WHERE id = $id
     ");
 
-    mysqli_commit($conn);
+    pg_commit($conn);
 
 } catch (Exception $e) {
-    mysqli_rollback($conn);
+    pg_rollback($conn);
     exit('ผิดพลาด');
 }
 

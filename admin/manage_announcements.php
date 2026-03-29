@@ -26,8 +26,8 @@ if (isset($_GET['toggle_active'])) {
 
 // ดำเนินการเพิ่มเนื้อหา
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add') {
-    $title = mysqli_real_escape_string($conn, $_POST['title']);
-    $content = mysqli_real_escape_string($conn, $_POST['content']);
+    $title = pg_real_escape_string($conn, $_POST['title']);
+    $content = pg_real_escape_string($conn, $_POST['content']);
     $is_active = isset($_POST['is_active']) ? 1 : 0;
     
     $imagePath = null;
@@ -54,7 +54,7 @@ $query = pg_query($conn, "SELECT * FROM system_announcements ORDER BY created_at
 function countRow($conn, $sql) {
     $q = pg_query($conn, $sql);
     if (!$q) return 0;
-    $r = mysqli_fetch_assoc($q);
+    $r = pg_fetch_assoc($q);
     return $r ? (int)$r['c'] : 0;
 }
 $pendingListings = countRow($conn, "SELECT COUNT(*) AS c FROM carbon_listings WHERE status='pending'");
@@ -137,7 +137,7 @@ $pendingWithdraws = countRow($conn, "SELECT COUNT(*) AS c FROM withdraw_requests
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = mysqli_fetch_assoc($query)): ?>
+                    <?php while ($row = pg_fetch_assoc($query)): ?>
                     <tr>
                         <td>
                             <?php if ($row['image']): ?>
@@ -172,7 +172,7 @@ $pendingWithdraws = countRow($conn, "SELECT COUNT(*) AS c FROM withdraw_requests
                         </td>
                     </tr>
                     <?php endwhile; ?>
-                    <?php if (mysqli_num_rows($query) == 0): ?>
+                    <?php if (pg_num_rows($query) == 0): ?>
                         <tr>
                             <td colspan="5" style="text-align:center; padding: 4rem;">
                                 <div style="color: var(--admin-text-muted); font-size: 1rem;">ยังไม่มีรายการประกาศในระบบ</div>

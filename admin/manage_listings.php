@@ -48,7 +48,7 @@ $listings = pg_query($conn, "
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = mysqli_fetch_assoc($listings)): ?>
+                    <?php while ($row = pg_fetch_assoc($listings)): ?>
                     <tr>
                         <td>
                             <div style="font-weight: 600; color: var(--admin-text);">📞 <?= htmlspecialchars($row['phone']); ?></div>

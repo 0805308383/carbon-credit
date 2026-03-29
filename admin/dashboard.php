@@ -9,7 +9,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
 function countRow($conn, $sql) {
     $q = pg_query($conn, $sql);
     if (!$q) return 0;
-    $r = mysqli_fetch_assoc($q);
+    $r = pg_fetch_assoc($q);
     return $r ? (int)$r['c'] : 0;
 }
 
@@ -32,7 +32,7 @@ $qSales = pg_query($conn, "
     ORDER BY m ASC 
     LIMIT 6
 ");
-while ($r = mysqli_fetch_assoc($qSales)) {
+while ($r = pg_fetch_assoc($qSales)) {
     $salesLabels[] = $r['m'];
     $salesData[] = $r['total'];
 }
@@ -49,7 +49,7 @@ $qCarbon = pg_query($conn, "
     ORDER BY m ASC 
     LIMIT 6
 ");
-while ($r = mysqli_fetch_assoc($qCarbon)) {
+while ($r = pg_fetch_assoc($qCarbon)) {
     $carbonLabels[] = $r['m'];
     $carbonData[] = $r['total'];
 }
@@ -73,11 +73,11 @@ $qProvinceSales = pg_query($conn, "
 
 $provincesWithListings = [];
 $qProv = pg_query($conn, "SELECT DISTINCT province FROM carbon_listings WHERE province IS NOT NULL AND province != ''");
-while ($p = mysqli_fetch_assoc($qProv)) {
+while ($p = pg_fetch_assoc($qProv)) {
     $provincesWithListings[] = $p['province'];
 }
 
-while ($r = mysqli_fetch_assoc($qProvinceSales)) {
+while ($r = pg_fetch_assoc($qProvinceSales)) {
     $topProvinces[] = $r;
 }
 ?>

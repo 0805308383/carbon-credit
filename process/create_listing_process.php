@@ -68,12 +68,12 @@ $sql = "INSERT INTO `carbon_listings`
         (`seller_id`, `type`, `province`, `tree_count`, `tree_age`, `tree_height`, `avg_height`, `rice_area`, `rice_age`, `carbon_amount`, `price_token`, `full_tree_image`, `reference_image`, `id_card_image`, `land_document`, `remaining_amount`, `status`) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')";
 
-$stmt = mysqli_prepare($conn, $sql);
+$stmt = pg_prepare($conn, $sql);
 if (!$stmt) {
-    die("Error preparing statement: " . mysqli_error($conn));
+    die("Error preparing statement: " . pg_error($conn));
 }
 
-mysqli_stmt_bind_param($stmt, "issiddddidsssssd", 
+pg_stmt_bind_param($stmt, "issiddddidsssssd", 
     $seller_id, 
     $carbon_type, 
     $province, 
@@ -92,7 +92,7 @@ mysqli_stmt_bind_param($stmt, "issiddddidsssssd",
     $remaining_amount
 );
 
-if (mysqli_stmt_execute($stmt)) {
+if (pg_stmt_execute($stmt)) {
     $_SESSION['flash_alert'] = [
         'type' => 'success',
         'title' => 'สำเร็จ',
@@ -100,9 +100,9 @@ if (mysqli_stmt_execute($stmt)) {
     ];
     header("Location: ../dashboard/history.php");
 } else {
-    echo "Error: " . mysqli_stmt_error($stmt);
+    echo "Error: " . pg_stmt_error($stmt);
 }
 
-mysqli_stmt_close($stmt);
-mysqli_close($conn);
+pg_stmt_close($stmt);
+pg_close($conn);
 ?>

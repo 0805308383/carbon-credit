@@ -16,7 +16,7 @@ $q = pg_query($conn, "
     WHERE id = $listing_id AND status = 'approved'
 ");
 
-$row = mysqli_fetch_assoc($q);
+$row = pg_fetch_assoc($q);
 if (!$row) {
     $_SESSION['flash_alert'] = [
         'type' => 'error',
@@ -63,7 +63,7 @@ if ($buy_amount <= 0) {
 
 // Check Buyer Wallet Balance
 $wallet_q = pg_query($conn, "SELECT token FROM wallets WHERE user_id = $buyer_id");
-$wallet = mysqli_fetch_assoc($wallet_q);
+$wallet = pg_fetch_assoc($wallet_q);
 
 if (!$wallet || (float)$wallet['token'] < $final_price) {
     $_SESSION['flash_alert'] = [

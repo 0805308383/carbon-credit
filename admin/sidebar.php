@@ -4,7 +4,7 @@ if (!function_exists('countRow')) {
     function countRow($conn, $sql) {
         $q = pg_query($conn, $sql);
         if (!$q) return 0;
-        $r = mysqli_fetch_assoc($q);
+        $r = pg_fetch_assoc($q);
         return $r ? (int)$r['c'] : 0;
     }
 }

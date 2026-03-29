@@ -19,13 +19,13 @@ $sql_create = "CREATE TABLE IF NOT EXISTS ref_provinces (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
 if (!pg_query($conn, $sql_create)) {
-    die("Error creating table: " . mysqli_error($conn));
+    die("Error creating table: " . pg_error($conn));
 }
 
 // Clear existing to avoid duplicates if re-run (optional, but clean for this task)
 // Or use INSERT IGNORE
 foreach ($provinces as $name) {
-    $name = mysqli_real_escape_string($conn, $name);
+    $name = pg_real_escape_string($conn, $name);
     $sql = "INSERT IGNORE INTO ref_provinces (name_th) VALUES ('$name')";
     pg_query($conn, $sql);
 }

@@ -10,7 +10,7 @@ $user_id = $_SESSION['user_id'];
 
 // Check status
 $check = pg_query($conn, "SELECT * FROM seller_requests WHERE user_id = $user_id ORDER BY id DESC LIMIT 1");
-$existing = mysqli_fetch_assoc($check);
+$existing = pg_fetch_assoc($check);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && (!$existing || $existing['status'] === 'rejected')) {
     pg_query($conn, "INSERT INTO seller_requests (user_id) VALUES ($user_id)");

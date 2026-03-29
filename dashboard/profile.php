@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-$user = mysqli_fetch_assoc(pg_query($conn, "SELECT * FROM users WHERE id = $user_id"));
+$user = pg_fetch_assoc(pg_query($conn, "SELECT * FROM users WHERE id = $user_id"));
 ?>
 <!DOCTYPE html>
 <html lang="th">

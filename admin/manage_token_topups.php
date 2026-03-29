@@ -48,7 +48,7 @@ $topups = pg_query($conn, "
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = mysqli_fetch_assoc($topups)): ?>
+                    <?php while ($row = pg_fetch_assoc($topups)): ?>
                     <tr>
                         <td style="text-align: center; color: var(--admin-text-muted);">#<?= $row['id']; ?></td>
                         <td>
@@ -79,7 +79,7 @@ $topups = pg_query($conn, "
                     </tr>
                     <?php endwhile; ?>
                     
-                    <?php if (mysqli_num_rows($topups) == 0): ?>
+                    <?php if (pg_num_rows($topups) == 0): ?>
                         <tr><td colspan="7" style="text-align:center; padding: 4rem; color: var(--admin-text-muted);">ไม่มีคำขอเติม Token ที่รอตรวจสอบ 🎉</td></tr>
                     <?php endif; ?>
                 </tbody>

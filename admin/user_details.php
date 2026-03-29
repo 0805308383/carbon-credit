@@ -18,7 +18,7 @@ $query = pg_query($conn, "
     LEFT JOIN bank_accounts b ON u.id = b.user_id 
     WHERE u.id = $id
 ");
-$user = mysqli_fetch_assoc($query);
+$user = pg_fetch_assoc($query);
 
 if (!$user) {
     exit('ไม่พบผู้ใช้งาน');

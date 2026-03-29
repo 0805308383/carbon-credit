@@ -17,7 +17,7 @@ $q = pg_query($conn, "
     ORDER BY id DESC LIMIT 1
 ");
 
-$data = mysqli_fetch_assoc($q);
+$data = pg_fetch_assoc($q);
 
 if (!$data || $data['otp_code'] != $inputOtp) {
     $_SESSION['flash_alert'] = [
@@ -35,7 +35,7 @@ $checkUser = pg_query($conn, "
     SELECT id FROM users WHERE phone='$phone' OR username='$username'
 ");
 
-if (mysqli_num_rows($checkUser) > 0) {
+if (pg_num_rows($checkUser) > 0) {
     // ล้าง session แล้วพาไป login
     unset($_SESSION['register_data']);
     unset($_SESSION['otp_demo']);
@@ -80,9 +80,9 @@ $sql = "
         $h_poa, $p_fn, $p_ln, $p_pos, $p_doc
     )
 ";
-pg_query($conn, $sql) or die(mysqli_error($conn));
+pg_query($conn, $sql) or die(pg_error($conn));
 
-$user_id = mysqli_insert_id($conn);
+$user_id = pg_insert_id($conn);
 
 // INSERT bank
 pg_query($conn, "

@@ -30,7 +30,7 @@ if ($type === 'buy_listing') {
 
     // Re-verify Balance before final insert
     $wallet_q = pg_query($conn, "SELECT token FROM wallets WHERE user_id = $buyer_id");
-    $wallet = mysqli_fetch_assoc($wallet_q);
+    $wallet = pg_fetch_assoc($wallet_q);
 
     if (!$wallet || (float)$wallet['token'] < $price) {
         $_SESSION['flash_alert'] = [
@@ -61,7 +61,7 @@ if ($type === 'buy_listing') {
     // but I'll update it here for consistency if any old flow uses it.
     $seller_id = $transaction['seller_id'];
     // ... rest of the code ...
-    pg_query($conn, $sql) or die(mysqli_error($conn));
+    pg_query($conn, $sql) or die(pg_error($conn));
 
     $_SESSION['flash_alert'] = [
         'type' => 'success',

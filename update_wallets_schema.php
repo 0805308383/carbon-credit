@@ -6,6 +6,6 @@ $sql = "ALTER TABLE wallets ADD COLUMN carbon_balance DECIMAL(15,2) DEFAULT 0.00
 if (pg_query($conn, $sql)) {
     echo "Column 'carbon_balance' added successfully.";
 } else {
-    echo "Error adding column: " . mysqli_error($conn);
+    echo "Error adding column: " . pg_error($conn);
 }
 ?>

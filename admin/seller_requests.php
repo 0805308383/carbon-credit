@@ -46,7 +46,7 @@ $requests = pg_query($conn, "
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = mysqli_fetch_assoc($requests)): ?>
+                    <?php while ($row = pg_fetch_assoc($requests)): ?>
                     <tr>
                         <td style="text-align: center; color: var(--admin-text-muted);">#<?= $row['id']; ?></td>
                         <td>
@@ -64,7 +64,7 @@ $requests = pg_query($conn, "
                     </tr>
                     <?php endwhile; ?>
                     
-                    <?php if (mysqli_num_rows($requests) == 0): ?>
+                    <?php if (pg_num_rows($requests) == 0): ?>
                         <tr><td colspan="5" style="text-align:center; padding:4rem; color:var(--admin-text-muted); font-size:1rem;">ไม่มีคำขอใหม่ในระบบ 🎉</td></tr>
                     <?php endif; ?>
                 </tbody>

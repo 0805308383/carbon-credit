@@ -27,7 +27,7 @@ $result = pg_query($conn, "
     SELECT * FROM users WHERE username = '$username' LIMIT 1
 ");
 
-$user = mysqli_fetch_assoc($result);
+$user = pg_fetch_assoc($result);
 
 // ไม่พบผู้ใช้
 if (!$user) {

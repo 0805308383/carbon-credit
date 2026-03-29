@@ -20,7 +20,7 @@ foreach ($tables_to_truncate as $table) {
     if (pg_query($conn, "TRUNCATE TABLE $table")) {
         echo "Done.\n";
     } else {
-        echo "Error: " . mysqli_error($conn) . "\n";
+        echo "Error: " . pg_error($conn) . "\n";
     }
 }
 
@@ -28,7 +28,7 @@ echo "Resetting wallets... ";
 if (pg_query($conn, "UPDATE wallets SET balance = 0, token = 0")) {
     echo "Done.\n";
 } else {
-    echo "Error: " . mysqli_error($conn) . "\n";
+    echo "Error: " . pg_error($conn) . "\n";
 }
 
 pg_query($conn, "SET FOREIGN_KEY_CHECKS = 1;");

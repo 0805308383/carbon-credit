@@ -16,7 +16,7 @@ $q = pg_query($conn, "
     WHERE id = $id AND status = 'pending'
 ");
 
-$data = mysqli_fetch_assoc($q);
+$data = pg_fetch_assoc($q);
 if (!$data) {
     exit('ไม่พบคำขอ');
 }

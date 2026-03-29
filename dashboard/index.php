@@ -12,20 +12,20 @@ $role    = $_SESSION['role'];
 // Seller Status
 $sellerStatus = null;
 $qStatus = pg_query($conn, "SELECT status FROM seller_requests WHERE user_id = $user_id ORDER BY id DESC LIMIT 1");
-if ($qStatus && $row = mysqli_fetch_assoc($qStatus)) {
+if ($qStatus && $row = pg_fetch_assoc($qStatus)) {
     $sellerStatus = $row['status'];
 }
 
 // Wallet
 $wallet = null;
 $qWallet = pg_query($conn, "SELECT balance, token, carbon_balance FROM wallets WHERE user_id = $user_id");
-if ($qWallet && mysqli_num_rows($qWallet) > 0) {
-    $wallet = mysqli_fetch_assoc($qWallet);
+if ($qWallet && pg_num_rows($qWallet) > 0) {
+    $wallet = pg_fetch_assoc($qWallet);
 }
 
 // User Type Mapping
 $qUser = pg_query($conn, "SELECT user_type FROM users WHERE id = $user_id");
-$uRow = mysqli_fetch_assoc($qUser);
+$uRow = pg_fetch_assoc($qUser);
 $utype = $uRow['user_type'] ?? 'individual';
 
 $badgeLabel = 'บุคคลธรรมดา';
@@ -151,8 +151,8 @@ if ($role === 'admin') {
                 </div>
 
                 <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:1.25rem;">
-                    <?php if (mysqli_num_rows($buyer_orders) > 0): ?>
-                        <?php while($order = mysqli_fetch_assoc($buyer_orders)): 
+                    <?php if (pg_num_rows($buyer_orders) > 0): ?>
+                        <?php while($order = pg_fetch_assoc($buyer_orders)): 
                             $img = !empty($order['full_tree_image']) ? $order['full_tree_image'] : $order['image'];
                         ?>
                         <div style="border:1px solid #f3f4f6; border-radius:16px; overflow:hidden; display:flex; flex-direction:column; background:white; position:relative; transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow:0 4px 6px -1px rgba(0,0,0,0.02);" onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px -1px rgba(0,0,0,0.02)';">
@@ -244,8 +244,8 @@ if ($role === 'admin') {
                 </div>
                 
                 <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:1.25rem;">
-                    <?php if (mysqli_num_rows($seller_listings) > 0): ?>
-                        <?php while($listing = mysqli_fetch_assoc($seller_listings)): 
+                    <?php if (pg_num_rows($seller_listings) > 0): ?>
+                        <?php while($listing = pg_fetch_assoc($seller_listings)): 
                             $img = !empty($listing['full_tree_image']) ? $listing['full_tree_image'] : $listing['image'];
                         ?>
                         <div style="border:1px solid #f3f4f6; border-radius:16px; overflow:hidden; display:flex; flex-direction:column; background:white; position:relative; transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow:0 4px 6px -1px rgba(0,0,0,0.02);" onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px -1px rgba(0,0,0,0.02)';">
@@ -318,8 +318,8 @@ if ($role === 'admin') {
             <h3>📢 ประกาศล่าสุด</h3>
             <?php
             $annQ = pg_query($conn, "SELECT * FROM system_announcements WHERE is_active = 1 ORDER BY created_at DESC LIMIT 5");
-            if (mysqli_num_rows($annQ) > 0) {
-                while ($ann = mysqli_fetch_assoc($annQ)) {
+            if (pg_num_rows($annQ) > 0) {
+                while ($ann = pg_fetch_assoc($annQ)) {
                     echo "<div style='margin-bottom:1.5rem; border-bottom:1px solid #eee; padding-bottom:1rem;'>";
                     if (!empty($ann['image'])) {
                         echo "<img src='../uploads/" . htmlspecialchars($ann['image']) . "' alt='promo' style='width:100%; max-height:200px; object-fit:cover; border-radius:8px; margin-bottom:1rem;'>";

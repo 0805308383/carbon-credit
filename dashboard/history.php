@@ -30,7 +30,7 @@ $qBuy = pg_query($conn, "
     JOIN users u ON l.seller_id = u.id
     WHERE o.buyer_id = $user_id
 ");
-while ($row = mysqli_fetch_assoc($qBuy)) {
+while ($row = pg_fetch_assoc($qBuy)) {
     $capacity = ($row['item_type'] == 'tree') ? $row['tree_count'] : $row['rice_area'];
     $order_carbon = ($row['buy_amount'] / ($capacity ?: 1)) * $row['total_l_carbon'];
 
@@ -65,12 +65,12 @@ $qSell = pg_query($conn, "
     FROM carbon_listings l
     WHERE l.seller_id = $user_id
 ");
-while ($row = mysqli_fetch_assoc($qSell)) {
+while ($row = pg_fetch_assoc($qSell)) {
     $buyer = '-';
     $phone = '-';
     if ($row['status'] === 'sold') {
         $qBuyer = pg_query($conn, "SELECT u.username, u.phone FROM orders o JOIN users u ON o.buyer_id = u.id WHERE o.listing_id = {$row['id']} AND o.status = 'approved' LIMIT 1");
-        if ($b = mysqli_fetch_assoc($qBuyer)) {
+        if ($b = pg_fetch_assoc($qBuyer)) {
             $buyer = $b['username'];
             $phone = $b['phone'];
         }

@@ -47,7 +47,7 @@ $withdraws = pg_query($conn, "
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = mysqli_fetch_assoc($withdraws)): ?>
+                    <?php while ($row = pg_fetch_assoc($withdraws)): ?>
                     <tr>
                         <td style="text-align: center; color: var(--admin-text-muted);">#<?= $row['id']; ?></td>
                         <td>
@@ -77,7 +77,7 @@ $withdraws = pg_query($conn, "
                     </tr>
                     <?php endwhile; ?>
                     
-                    <?php if (mysqli_num_rows($withdraws) == 0): ?>
+                    <?php if (pg_num_rows($withdraws) == 0): ?>
                         <tr><td colspan="6" style="text-align:center; padding: 4rem; color: var(--admin-text-muted);">ไม่มีคำขอถอนเงินที่รอตรวจสอบ 🎉</td></tr>
                     <?php endif; ?>
                 </tbody>

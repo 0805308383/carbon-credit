@@ -18,8 +18,8 @@ $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
 // Check for duplicates
 $check = pg_query($conn, "SELECT * FROM users WHERE phone = '$phone' OR username = '$username'");
-if (mysqli_num_rows($check) > 0) {
-    $row = mysqli_fetch_assoc($check);
+if (pg_num_rows($check) > 0) {
+    $row = pg_fetch_assoc($check);
     $msg = '';
     if ($row['phone'] === $phone) $msg = 'เบอร์โทรศัพท์นี้ถูกใช้งานแล้ว';
     if ($row['username'] === $username) $msg = 'Username นี้ถูกใช้งานแล้ว';
@@ -98,7 +98,7 @@ $sql = "INSERT INTO otp_verifications (phone, otp_code, expires_at)
         VALUES ('$phone', '$otp', '$expire')";
 
 if (!pg_query($conn, $sql)) {
-    die(mysqli_error($conn));
+    die(pg_error($conn));
 }
 
 // เก็บ OTP ไว้แสดง (simulation)
